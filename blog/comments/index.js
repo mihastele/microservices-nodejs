@@ -22,6 +22,8 @@ app.post("/posts/:id/comments", (req, res) => {
 
   comments.push({ id, content });
 
+  commentsByPostId[postId] = comments;
+
   res.status(201).send(comments);
 });
 
