@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const axios = require("axios");
 
 const app = express();
 app.use(bodyParser.json());
@@ -37,7 +38,7 @@ const handleEvent = (type, data) => {
 
   if (type === "CommentUpdated") {
     const { id, content, postId, status } = data;
-    console.log(data);
+    // console.log(data);
 
     const comment = posts[postId].comments.find((comment) => comment.id === id);
 
@@ -62,11 +63,17 @@ app.post("/events", (req, res) => {
 app.listen(4002, async () => {
   console.log("Listening on 4002");
 
-  const res = await axios.get("http://localhost:4005/events");
+  try {
+    const res = await axios.get("http://localhost:4005/events");
 
-  for (let event of res.data) {
-    console.log("Processing event:", event.type);
+    for (let event of res.data) {
+      console.log("Processing event:", event.type);
+      console.log("DATA: ", event.data);
+      console.log("POSTS ", posts);
 
-    handleEvent(event.type, event.data);
+      handleEvent(event.type, event.data);
+    }
+  } catch (err) {
+    console.log("ERROR: ", err);
   }
 });
