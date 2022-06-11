@@ -11,7 +11,7 @@ app.post("/events", async (req, res) => {
   let port = 4000;
 
   // downside - no error handling if one of the apps is failing, no exception handling techniques
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 4; i++) {
     try {
       await axios.post(`http://localhost:${port}/events`, event);
     } catch (err) {
